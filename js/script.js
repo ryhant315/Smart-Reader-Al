@@ -136,6 +136,8 @@
   let isFullscreen = false;
   let isProcessing = false;
   let currentPdfBytes = null;
+  let currentPdfDoc = null;
+  let ocrScannedFile = false;
   let conversionCount = 0;
   let downloadCount = 0;
 
@@ -516,6 +518,7 @@
   async function processPDF(file) {
     if (isProcessing) return;
     isProcessing = true;
+    ocrScannedFile = false;
 
     try {
       if (typeof pdfjsLib === 'undefined') {
@@ -590,12 +593,20 @@
 
       totalWords = countWords(fullText);
       if (totalWords === 0) {
-        fullText = currentLang === 'ar'
-          ? '⚠️ لم يتم العثور على نصوص في هذا الملف. قد يكون ملف PDF ممسوحاً ضوئياً (صورة) أو فارغاً.'
-          : '⚠️ No text found in this file. It may be a scanned (image) PDF or empty.';
+        currentPdfDoc = pdf;
+        const ocrBtnId = 'ocrStartBtn';
+        const ocrMsg = currentLang === 'ar'
+          ? '⚠️ هذا الملف ممسوح ضوئياً ولا يحتوي على نصوص قابلة للتحديد.'
+          : '⚠️ This PDF appears to be scanned (image-based) with no selectable text.';
+        const ocrBtnText = currentLang === 'ar' ? '🔍 تجربة التعرف الضوئي (OCR)' : '🔍 Try OCR Text Recognition';
+        const ocrNote = currentLang === 'ar'
+          ? 'قد يستغرق ذلك بضع دقائق حسب عدد الصفحات.'
+          : 'This may take a few minutes depending on the number of pages.';
+        fullText = `${ocrMsg}\n\n<div class="ocr-prompt"><button class="btn-primary" id="${ocrBtnId}" style="padding:14px 32px;font-size:1.1rem;border-radius:12px;background:var(--primary);color:white;border:none;cursor:pointer;transition:transform 0.2s;">${ocrBtnText}</button>\n<p style="color:var(--text-muted);font-size:0.85rem;margin-top:8px;">${ocrNote}</p></div>`;
         totalWords = 0;
+        ocrScannedFile = true;
       }
-      if (extractLimit > 0) incrementConversions(maxPages);
+      if (!ocrScannedFile && extractLimit > 0) incrementConversions(maxPages);
 
       updateProgress(100, currentLang === 'ar' ? 'تم بنجاح!' : 'Done!');
       updateLoadingBar(100);
@@ -611,6 +622,95 @@
       console.error('PDF error:', err);
       uploadArea.classList.remove('processing');
       showToast(t('toastError') + ': ' + err.message, 'error');
+      updateLoadingBar(0);
+    } finally {
+      isProcessing = false;
+    }
+  }
+
+  async function runOCR() {
+    if (typeof Tesseract === 'undefined') {
+      showToast(currentLang === 'ar' ? 'مكتبة OCR غير متوفرة. تحقق من اتصالك بالإنترنت.' : 'OCR library not available. Check your internet connection.', 'error');
+      return;
+    }
+    if (!currentPdfDoc) {
+      showToast(currentLang === 'ar' ? 'الرجاء إعادة رفع الملف.' : 'Please re-upload the file.', 'error');
+      return;
+    }
+    isProcessing = true;
+    uploadArea.classList.add('processing');
+
+    try {
+      const plan = (!currentUser || currentUser.isGuest) ? 'free' : (currentUser.plan || 'free');
+      const isFreePlan = plan === 'free';
+      const samplePages = 5;
+      const check = checkConversionAllowed();
+      const maxPages = check.pageLimit === Infinity ? totalPages : Math.min(totalPages, check.pageLimit);
+      const ocrLimit = isFreePlan ? Math.min(samplePages, totalPages) : maxPages;
+      const ocrMsg = currentLang === 'ar'
+        ? `جاري التعرف الضوئي على ${ocrLimit} صفحة...`
+        : `Running OCR on ${ocrLimit} pages...`;
+      updateProgress(10, ocrMsg);
+      updateLoadingBar(10);
+
+      let worker;
+      try {
+        worker = await Tesseract.createWorker('ara+eng');
+      } catch (e) {
+        worker = await Tesseract.createWorker('eng');
+      }
+
+      let ocrFullText = '';
+      for (let i = 1; i <= ocrLimit; i++) {
+        const page = await currentPdfDoc.getPage(i);
+        const viewport = page.getViewport({ scale: 1.5 });
+        const canvas = document.createElement('canvas');
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+
+        const { data } = await worker.recognize(canvas);
+        ocrFullText += (data.text || '') + '\n\n';
+
+        const percent = 10 + (80 * i / ocrLimit);
+        updateProgress(percent, `${currentLang === 'ar' ? 'OCR صفحة' : 'OCR Page'} ${i} ${currentLang === 'ar' ? 'من' : 'of'} ${ocrLimit}`);
+        updateLoadingBar(percent);
+        canvas.remove();
+      }
+      await worker.terminate();
+
+      if (isFreePlan && totalPages > samplePages) {
+        ocrFullText += `\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        ocrFullText += currentLang === 'ar'
+          ? `📖 معاينة تجريبية - أول ${samplePages} صفحات من أصل ${totalPages}\n`
+          : `📖 Trial preview - First ${samplePages} of ${totalPages} pages\n`;
+        ocrFullText += currentLang === 'ar'
+          ? `✨ للحصول على الكتاب كاملاً، اشتر تحويل PDF أو اشترك شهرياً.\n`
+          : `✨ Get the full book. Buy PDF Convert or subscribe monthly.\n`;
+        ocrFullText += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      }
+
+      fullText = ocrFullText;
+      totalWords = countWords(fullText);
+      if (ocrLimit > 0) incrementConversions(maxPages);
+
+      updateProgress(100, currentLang === 'ar' ? 'تم التعرف على النصوص!' : 'OCR complete!');
+      updateLoadingBar(100);
+
+      setTimeout(() => {
+        uploadArea.classList.remove('processing');
+        uploadArea.classList.add('has-file');
+        showReader();
+      }, 300);
+
+      showToast(currentLang === 'ar' ? 'تم التعرف على النصوص بنجاح' : 'OCR completed successfully', 'success');
+    } catch (err) {
+      console.error('OCR error:', err);
+      uploadArea.classList.remove('processing');
+      showToast((currentLang === 'ar' ? 'فشل التعرف الضوئي: ' : 'OCR failed: ') + err.message, 'error');
       updateLoadingBar(0);
     } finally {
       isProcessing = false;
@@ -788,6 +888,12 @@
   uploadArea.addEventListener('click', () => { if (!isProcessing) fileInput.click(); });
   fileInput.addEventListener('change', () => {
     if (fileInput.files.length > 0) { processPDF(fileInput.files[0]); fileInput.value = ''; }
+  });
+
+  // OCR button (delegation for dynamic button)
+  readerContent.addEventListener('click', (e) => {
+    const btn = e.target.closest('#ocrStartBtn');
+    if (btn) runOCR();
   });
 
   // Reader controls
