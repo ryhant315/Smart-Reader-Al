@@ -629,13 +629,20 @@
   }
 
   async function runOCR() {
-    if (typeof Tesseract === 'undefined') {
-      showToast(currentLang === 'ar' ? 'مكتبة OCR غير متوفرة. تحقق من اتصالك بالإنترنت.' : 'OCR library not available. Check your internet connection.', 'error');
-      return;
-    }
     if (!currentPdfDoc) {
       showToast(currentLang === 'ar' ? 'الرجاء إعادة رفع الملف.' : 'Please re-upload the file.', 'error');
       return;
+    }
+    if (typeof Tesseract === 'undefined') {
+      updateProgress(0, currentLang === 'ar' ? 'جاري تحميل مكتبة OCR (~5MB)...' : 'Loading OCR library (~5MB)...');
+      uploadArea.classList.add('processing');
+      await new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+        s.onload = resolve;
+        s.onerror = () => reject(new Error(currentLang === 'ar' ? 'فشل تحميل مكتبة OCR' : 'Failed to load OCR library'));
+        document.body.appendChild(s);
+      });
     }
     isProcessing = true;
     uploadArea.classList.add('processing');
