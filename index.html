@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Reader AI - قارئ الكتب الذكي | تحويل PDF إلى كتاب تفاعلي</title>
+  <meta name="description" content="منصة ذكية لتحويل PDF والكتب إلى تجربة قراءة تفاعلية - تلخيص، دردشة، ترجمة، شرح بالذكاء الاصطناعي. ارفع كتابك واقرأ بذكاء." />
+  <meta name="keywords" content="قارئ كتب, تحويل PDF, ذكاء اصطناعي, تلخيص كتب, ترجمة, قراءة ذكية, كتب إلكترونية, PDF reader AI" />
+  <meta name="author" content="Smart Reader AI" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://smartreader.ai/" />
+  <meta property="og:title" content="Smart Reader AI - قارئ الكتب الذكي" />
+  <meta property="og:description" content="منصة ذكية لتحويل PDF والكتب إلى تجربة قراءة تفاعلية" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://smartreader.ai/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Smart Reader AI - قارئ الكتب الذكي" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>" />
+  <meta name="theme-color" content="#7A8B5B" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;700;900&family=Amiri:wght@400;700&family=Cairo:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="loading-bar" id="loadingBar"></div>
+
+<!-- HEADER -->
+<header class="header" id="header">
+  <div class="container header-inner">
+    <div class="logo">
+      <i class="fas fa-robot"></i>
+      <span>Smart <span class="logo-highlight">Reader AI</span></span>
+    </div>
+    <nav class="nav-links">
+      <a href="#home" class="active">الرئيسية</a>
+      <a href="#features">المميزات</a>
+      <a href="#ai-features">الذكاء الاصطناعي</a>
+      <a href="#pricing">الباقات</a>
+    </nav>
+    <div class="header-controls">
+      <button class="theme-toggle" id="themeToggle" title="تبديل السمة"><i class="fas fa-moon"></i></button>
+      <button class="lang-toggle" id="langToggle" title="English"><i class="fas fa-language"></i><span>EN</span></button>
+      <button class="auth-btn" id="adminBtn" title="دخول المالك" style="background:transparent;border:1px solid var(--border-color);padding:8px 12px;border-radius:8px;font-size:0.8rem;color:var(--text-muted);"><i class="fas fa-crown"></i></button>
+      <button class="auth-btn" id="loginBtn">تسجيل</button>
+      <button class="auth-btn auth-btn--primary" id="signupBtn">ابدأ مجاناً</button>
+      <div class="user-menu" id="userMenu">
+        <button class="user-avatar" id="userAvatar"><i class="fas fa-user"></i><span class="user-badge" id="userBadge"></span></button>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="dropdown-header"><i class="fas fa-user-circle"></i><div><strong id="dropdownUserName">مستخدم</strong><small id="dropdownUserPlan">مجاني</small></div></div>
+          <a href="#" id="dashboardLink"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</a>
+          <a href="#" id="dropdownLogout"><i class="fas fa-sign-out-alt"></i> تسجيل خروج</a>
+        </div>
+      </div>
+    </div>
+    <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home">الرئيسية</a>
+  <a href="#features">المميزات</a>
+  <a href="#ai-features">الذكاء الاصطناعي</a>
+  <a href="#pricing">الباقات</a>
+  <hr />
+  <button id="mobileLoginBtn"><i class="fas fa-sign-in-alt"></i> تسجيل</button>
+  <button id="mobileSignupBtn"><i class="fas fa-user-plus"></i> ابدأ مجاناً</button>
+  <hr />
+  <button class="theme-toggle-mobile" id="themeToggleMobile"><i class="fas fa-moon"></i> السمة الداكنة</button>
+  <button class="lang-toggle-mobile" id="langToggleMobile"><i class="fas fa-language"></i> English</button>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-badge"><i class="fas fa-sparkles"></i> قارئ ذكي بتقنية AI</div>
+          <h1>حوّل أي PDF إلى <span class="gradient-text">كتاب إلكتروني</span></h1>
+        <p class="hero-subtitle">ارفع PDF، EPUB، DOCX - تفاعل مع كتبك بالذكاء الاصطناعي: اسأل، لخص، اشرح، ترجم، واستمع. أول 5 صفحات مجاناً.</p>
+        <div class="hero-cta">
+          <button class="upload-btn" id="heroUploadBtn"><i class="fas fa-upload"></i> ارفع كتابك مجاناً</button>
+          <button class="hero-cta-secondary" id="heroPricingBtn">شاهد الباقات <i class="fas fa-arrow-left"></i></button>
+        </div>
+        <div class="hero-supported">
+          <span>يدعم:</span>
+          <i class="fas fa-file-pdf" title="PDF"></i>
+          <i class="fas fa-file-alt" title="EPUB"></i>
+          <i class="fas fa-file-word" title="DOCX"></i>
+        </div>
+      </div>
+      <div class="upload-area-wrapper">
+        <div class="upload-area" id="uploadArea">
+          <div class="upload-content" id="uploadContent">
+            <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <h3>ارفع كتابك</h3>
+            <p>اسحب وأفلت الملف هنا أو اضغط للاختيار</p>
+            <span class="upload-hint">يدعم PDF, EPUB, DOCX - حتى 100 MB</span>
+            <button class="upload-btn" id="uploadBtn"><i class="fas fa-upload"></i> اختر ملف</button>
+          </div>
+          <div class="upload-progress" id="uploadProgress">
+            <div class="progress-circle">
+              <svg viewBox="0 0 100 100">
+                <circle class="progress-bg" cx="50" cy="50" r="45" />
+                <circle class="progress-fill" id="progressFill" cx="50" cy="50" r="45" />
+              </svg>
+              <span class="progress-text" id="progressText">0%</span>
+            </div>
+            <p class="progress-file-name" id="progressFileName">جاري المعالجة...</p>
+          </div>
+          <input type="file" id="fileInput" accept=".pdf,.epub,.docx" hidden />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-decor">
+    <div class="decor-circle decor-circle-1"></div>
+    <div class="decor-circle decor-circle-2"></div>
+    <div class="decor-circle decor-circle-3"></div>
+  </div>
+</section>
+
+<!-- Ad: After Hero -->
+<div class="ad-container ad-header">
+  <div class="ad-label">إعلان</div>
+  <div class="ad-placeholder ad-responsive">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
+      data-ad-slot="xxxxxxxxxx"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
+</div>
+
+<!-- AI TOOLBAR (يظهر بعد رفع الكتاب) -->
+<section class="ai-toolbar-section" id="aiToolbar">
+  <div class="container">
+    <div class="ai-toolbar">
+      <button class="ai-tool-btn" data-tool="summary"><i class="fas fa-align-left"></i> لخص</button>
+      <button class="ai-tool-btn" data-tool="chat"><i class="fas fa-comments"></i> اسأل</button>
+      <button class="ai-tool-btn" data-tool="explain"><i class="fas fa-lightbulb"></i> اشرح</button>
+      <button class="ai-tool-btn" data-tool="translate"><i class="fas fa-language"></i> ترجم</button>
+      <button class="ai-tool-btn" data-tool="audio"><i class="fas fa-headphones"></i> استمع</button>
+      <button class="ai-tool-btn" id="saveQuoteBtn" data-tool="quotes"><i class="fas fa-quote-right"></i> اقتباسات</button>
+      <button class="ai-tool-btn" data-tool="quiz"><i class="fas fa-question-circle"></i> اختبار</button>
+      <button class="ai-tool-btn" data-tool="mindmap"><i class="fas fa-project-diagram"></i> خريطة</button>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLBAR -->
+<section class="toolbar-section" id="toolbarSection">
+  <div class="container">
+    <div class="toolbar">
+      <div class="toolbar-group">
+        <label class="tool-label"><i class="fas fa-font"></i><span>الخط</span></label>
+        <select class="tool-select" id="fontSelect">
+          <option value="Noto Sans Arabic">نوتو (حديث)</option>
+          <option value="Amiri">أميري (كلاسيكي)</option>
+          <option value="Cairo">القاهرة (عصري)</option>
+          <option value="Scheherazade New">شهرزاد (تراثي)</option>
+        </select>
+      </div>
+      <div class="toolbar-group">
+        <label class="tool-label"><i class="fas fa-text-height"></i><span>الحجم</span></label>
+        <div class="size-control">
+          <button class="size-btn" id="decreaseSize">أ-</button>
+          <span class="size-value" id="sizeValue">18</span>
+          <button class="size-btn" id="increaseSize">أ+</button>
+        </div>
+      </div>
+      <div class="toolbar-group">
+        <label class="tool-label"><i class="fas fa-palette"></i><span>السمة</span></label>
+        <div class="theme-options">
+          <button class="theme-option active" data-theme="sepia" title="سيبيا"><i class="fas fa-book"></i></button>
+          <button class="theme-option" data-theme="dark" title="داكن"><i class="fas fa-moon"></i></button>
+          <button class="theme-option" data-theme="light" title="فاتح"><i class="fas fa-sun"></i></button>
+        </div>
+      </div>
+      <div class="toolbar-group">
+        <label class="tool-label"><i class="fas fa-align-right"></i><span>المحاذاة</span></label>
+        <div class="align-options">
+          <button class="align-option active" data-align="right" title="يمين"><i class="fas fa-align-right"></i></button>
+          <button class="align-option" data-align="center" title="وسط"><i class="fas fa-align-center"></i></button>
+          <button class="align-option" data-align="justify" title="ضبط"><i class="fas fa-align-justify"></i></button>
+        </div>
+      </div>
+      <div class="toolbar-group toolbar-download">
+        <button class="download-btn" id="downloadTxt"><i class="fas fa-file-alt"></i> TXT</button>
+        <button class="download-btn" id="downloadPdf"><i class="fas fa-file-pdf"></i> PDF</button>
+        <button class="download-btn" id="downloadEpub"><i class="fas fa-file-export"></i> EPUB</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- READER + AI PANEL -->
+<section class="reader-section" id="readerSection">
+  <div class="container">
+    <div class="reader-meta" id="readerMeta">
+      <div class="meta-info"><i class="fas fa-file"></i><span id="fileName">-</span></div>
+      <div class="meta-info"><i class="fas fa-layer-group"></i><span id="pageCount">0</span> صفحة</div>
+      <div class="meta-info"><i class="fas fa-font"></i><span id="wordCount">0</span> كلمة</div>
+      <div class="meta-info"><i class="fas fa-clock"></i><span id="readingTime">0</span> دقيقة</div>
+      <div class="meta-info"><i class="fas fa-chart-bar"></i><span id="difficultyLevel">-</span></div>
+    </div>
+    <div class="reader-split">
+      <div class="reader" id="reader">
+        <div class="reader-header">
+          <div class="reader-header-info"><i class="fas fa-book-reader"></i><span>القراءة</span></div>
+          <div class="reader-controls">
+            <button class="reader-btn" id="readerFullscreen" title="شاشة كاملة"><i class="fas fa-expand"></i></button>
+          </div>
+        </div>
+        <div class="reader-content" id="readerContent">
+          <div class="reader-placeholder"><i class="fas fa-robot"></i><p>ارفع كتاباً لبدء القراءة الذكية</p><small>يدعم PDF, EPUB, DOCX</small></div>
+        </div>
+        <!-- In-reader Ad -->
+        <div class="ad-container ad-in-reader">
+          <div class="ad-label">إعلان</div>
+          <div class="ad-placeholder ad-in-article">
+            <ins class="adsbygoogle"
+              style="display:block; text-align:center;"
+              data-ad-layout="in-article"
+              data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
+              data-ad-slot="xxxxxxxxxx"></ins>
+          </div>
+        </div>
+      </div>
+      <div class="ai-panel" id="aiPanel">
+        <div class="ai-panel-tabs">
+          <button class="ai-panel-tab active" data-ai-tab="summary"><i class="fas fa-align-left"></i> ملخص</button>
+          <button class="ai-panel-tab" data-ai-tab="chat"><i class="fas fa-comments"></i> دردشة</button>
+          <button class="ai-panel-tab" data-ai-tab="explain"><i class="fas fa-lightbulb"></i> شرح</button>
+          <button class="ai-panel-tab" data-ai-tab="translate"><i class="fas fa-language"></i> ترجمة</button>
+        </div>
+        <div class="ai-panel-body">
+          <!-- ملخص -->
+          <div class="ai-panel-content active" id="aiSummary">
+            <div class="ai-panel-header">
+              <h4><i class="fas fa-robot"></i> الملخص الذكي</h4>
+              <select class="summary-type" id="summaryType">
+                <option value="short">قصير</option>
+                <option value="medium" selected>متوسط</option>
+                <option value="detailed">مفصل</option>
+                <option value="bullets">نقاط</option>
+              </select>
+            </div>
+            <div class="ai-panel-text" id="summaryText">
+              <p class="ai-placeholder">ارفع كتاباً لبدء التلخيص الذكي...</p>
+            </div>
+            <button class="ai-action-btn" id="generateSummaryBtn"><i class="fas fa-magic"></i> لخص الآن</button>
+          </div>
+          <!-- دردشة -->
+          <div class="ai-panel-content" id="aiChat">
+            <div class="chat-messages" id="chatMessages">
+              <div class="chat-msg ai-msg"><i class="fas fa-robot"></i> <span>مرحباً! اطرح أي سؤال عن الكتاب وسأجيبك بناءً على محتواه.</span></div>
+            </div>
+            <div class="chat-input-area">
+              <input type="text" class="chat-input" id="chatInput" placeholder="اسأل عن الكتاب..." />
+              <button class="chat-send-btn" id="chatSendBtn"><i class="fas fa-paper-plane"></i></button>
+            </div>
+          </div>
+          <!-- شرح -->
+          <div class="ai-panel-content" id="aiExplain">
+            <div class="ai-panel-header"><h4><i class="fas fa-lightbulb"></i> شرح النص</h4></div>
+            <p class="ai-hint">حدد أي كلمة أو فقرة في النص للحصول على شرح ذكي.</p>
+            <div class="ai-panel-text" id="explainText"><p class="ai-placeholder">انقر على أي نص في الكتاب للشرح...</p></div>
+          </div>
+          <!-- ترجمة -->
+          <div class="ai-panel-content" id="aiTranslate">
+            <div class="ai-panel-header">
+              <h4><i class="fas fa-language"></i> الترجمة</h4>
+              <select class="translate-lang" id="translateLang">
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+                <option value="es">Español</option>
+                <option value="tr">Türkçe</option>
+              </select>
+            </div>
+            <div class="translate-split">
+              <div class="translate-original" id="translateOriginal"><p class="ai-placeholder">النص الأصلي...</p></div>
+              <div class="translate-result" id="translateResult"><p class="ai-placeholder">النص المترجم...</p></div>
+            </div>
+            <button class="ai-action-btn" id="translateBtn"><i class="fas fa-language"></i> ترجم الصفحة</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features fade-section" id="features">
+  <div class="container">
+    <div class="section-header">
+      <h2>مميزات <span class="gradient-text">متطورة</span></h2>
+      <p>كل ما تحتاجه لتجربة قراءة ذكية</p>
+      <div class="section-divider"></div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-file-upload"></i></div>
+        <h3>رفع متعدد</h3>
+        <p>يدعم PDF, EPUB, DOCX - استخراج ذكي للنصوص وتحليل هيكل الكتاب</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-align-left"></i></div>
+        <h3>تلخيص ذكي</h3>
+        <p>ملخص كامل للكتاب وكل فصل مع أهم الأفكار والنقاط الرئيسية</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-comments"></i></div>
+        <h3>دردشة مع الكتاب</h3>
+        <p>اسأل كتابك مباشرة - شبيه ChatGPT لكن بإجابات مأخوذة من محتوى كتابك</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-lightbulb"></i></div>
+        <h3>شرح ذكي</h3>
+        <p>حدد أي كلمة أو جملة واحصل على شرح مبسط وأمثلة إضافية</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-language"></i></div>
+        <h3>ترجمة فورية</h3>
+        <p>ترجمة كلمة، فقرة، أو صفحة كاملة مع عرض النص الأصلي والمترجم</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-headphones"></i></div>
+        <h3>قراءة صوتية</h3>
+        <p>استمع لكتبك بصوت طبيعي مع عدة لغات وأصوات والتحكم بالسرعة</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-quote-right"></i></div>
+        <h3>اقتباسات ذكية</h3>
+        <p>حدد النصوص المهمة، احفظ الاقتباسات، صنفها، وصدرها</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-question-circle"></i></div>
+        <h3>أسئلة واختبارات</h3>
+        <p>توليد أسئلة اختيار من متعدد، صح وخطأ، وبطاقات مراجعة تلقائياً</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-project-diagram"></i></div>
+        <h3>خرائط ذهنية</h3>
+        <p>خرائط ذهنية تلقائية تعرض الأفكار الرئيسية والعلاقات بين المفاهيم</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI FEATURES DETAIL -->
+<section class="ai-features-section fade-section" id="ai-features">
+  <div class="container">
+    <div class="section-header">
+      <h2>ميزات <span class="gradient-text">الذكاء الاصطناعي</span></h2>
+      <p>تقنيات متقدمة لتحسين فهمك واستيعابك</p>
+      <div class="section-divider"></div>
+    </div>
+    <div class="ai-features-grid">
+      <div class="ai-feature-card" onclick="openAIModal('study')">
+        <div class="ai-feature-icon"><i class="fas fa-graduation-cap"></i></div>
+        <h3>مساعد دراسة</h3>
+        <p>خطة دراسة ذكية من كتابك مع تحديد أهم الفصول وتقدير وقت القراءة</p>
+      </div>
+      <div class="ai-feature-card" onclick="openAIModal('mindmap')">
+        <div class="ai-feature-icon"><i class="fas fa-project-diagram"></i></div>
+        <h3>خرائط ذهنية</h3>
+        <p>Mind Map تلقائية تعرض الفكرة الرئيسية والمواضيع الفرعية</p>
+      </div>
+      <div class="ai-feature-card" onclick="openAIModal('analysis')">
+        <div class="ai-feature-icon"><i class="fas fa-chart-pie"></i></div>
+        <h3>تحليل محتوى</h3>
+        <p>الكلمات الأكثر تكراراً، المواضيع الرئيسية، مستوى الصعوبة</p>
+      </div>
+      <div class="ai-feature-card" onclick="openAIModal('flashcards')">
+        <div class="ai-feature-icon"><i class="fas fa-layer-group"></i></div>
+        <h3>بطاقات مراجعة</h3>
+        <p>Flashcards ذكية من أهم نقاط الكتاب للمراجعة السريعة</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Ad: Before Pricing -->
+<div class="ad-container ad-section-break">
+  <div class="ad-label">إعلان</div>
+  <div class="ad-placeholder ad-responsive">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
+      data-ad-slot="xxxxxxxxxx"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
+</div>
+
+<!-- ABOUT / CONTACT -->
+<section class="about-section fade-section" id="about">
+  <div class="container">
+    <div class="section-header">
+      <h2>عن <span class="gradient-text">Smart Reader AI</span></h2>
+      <p>منصة ذكية لتحويل الكتب إلى تجربة قراءة تفاعلية</p>
+      <div class="section-divider"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="about-icon"><i class="fas fa-robot"></i></div>
+        <h3>رسالتنا</h3>
+        <p>تمكين القرّاء من فهم واستيعاب الكتب بشكل أعمق باستخدام أحدث تقنيات الذكاء الاصطناعي. نحوّل القراءة التقليدية إلى تجربة تفاعلية غنية.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon"><i class="fas fa-eye"></i></div>
+        <h3>رؤيتنا</h3>
+        <p>أن نكون المنصة الأولى عالمياً للقراءة الذكية، حيث يصبح كل كتاب دورة تعليمية متكاملة بلمسة زر.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon"><i class="fas fa-envelope"></i></div>
+        <h3>اتصل بنا</h3>
+        <p>للاقتراحات والدعم الفني والشراكات، تواصل معنا على:<br>
+        <a href="mailto:contact@smartreader.ai" style="color:var(--primary);font-weight:700;">contact@smartreader.ai</a></p>
+        <p style="margin-top:8px;"><a href="https://wa.me/218XXXXXXXXX" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;color:#25D366;font-weight:700;text-decoration:none;"><i class="fab fa-whatsapp"></i> واتساب: 218XXXXXXXXX</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing fade-section" id="pricing">
+  <div class="container">
+    <div class="section-header">
+      <h2>اختر <span class="gradient-text">باقتك</span></h2>
+      <p>ابدأ مجاناً أو اشترك واستمتع بكل ميزات الذكاء الاصطناعي</p>
+    </div>
+    <div class="currency-toggle">
+      <button class="currency-btn active" data-currency="usd">$ USD</button>
+      <button class="currency-btn" data-currency="lyd">د.ل دينار</button>
+    </div>
+    <div class="pricing-toggle" id="pricingToggleWrapper">
+      <span class="pricing-toggle-label active" id="toggleMonthly">شهري</span>
+      <label class="switch"><input type="checkbox" id="pricingSwitch" /><span class="switch-slider"></span></label>
+      <span class="pricing-toggle-label" id="toggleYearly">سنوي <span class="pricing-badge">وفر 15%</span></span>
+    </div>
+    <div class="pricing-grid">
+      <!-- Free -->
+      <div class="pricing-card">
+        <div class="pricing-card-header">
+          <h3>مجاني</h3>
+          <p class="pricing-price"><span class="price-num">0</span> <span class="price-curr">$0</span></p>
+          <p class="pricing-desc">معاينة 5 صفحات تجربة</p>
+        </div>
+        <ul class="pricing-features">
+          <li><i class="fas fa-check"></i> معاينة أول 5 صفحات</li>
+          <li><i class="fas fa-check"></i> تحميل TXT (5 صفحات)</li>
+          <li><i class="fas fa-check"></i> تجربة بدون تسجيل</li>
+          <li class="disabled"><i class="fas fa-times"></i> تحويل PDF كامل</li>
+          <li class="disabled"><i class="fas fa-times"></i> ميزات الذكاء الاصطناعي</li>
+        </ul>
+        <button class="pricing-btn" id="freePlanBtn">ابدأ مجاناً</button>
+      </div>
+      <!-- Basic: تحويل PDF - $0.80 / 4 د.ل لكتاب واحد -->
+      <div class="pricing-card">
+        <div class="pricing-card-header">
+          <h3>تحويل PDF</h3>
+          <p class="pricing-price"><span class="price-num price-num--basic" data-price-usd="0.80" data-price-lyd="4">0.80</span> <span class="price-curr price-curr--basic">$</span></p>
+          <p class="pricing-desc">كتاب واحد فقط - دفع لمرة واحدة</p>
+        </div>
+        <ul class="pricing-features">
+          <li><i class="fas fa-check"></i> كتاب كامل (حد 300 صفحة)</li>
+          <li><i class="fas fa-check"></i> جميع صيغ التحميل (TXT, PDF, EPUB)</li>
+          <li><i class="fas fa-check"></i> تجربة قراءة مريحة</li>
+          <li><i class="fas fa-check"></i> 3 سمات قراءة + تحكم كامل</li>
+          <li class="disabled"><i class="fas fa-times"></i> ميزات الذكاء الاصطناعي</li>
+          <li class="disabled"><i class="fas fa-times"></i> أكثر من كتاب</li>
+        </ul>
+        <button class="pricing-btn pricing-btn--primary" id="basicPlanBtn">طلب الاشتراك</button>
+      </div>
+      <!-- Smart: ذهبية - $14 / 70 د.ل = 10 كتب -->
+      <div class="pricing-card pricing-card--popular">
+        <div class="pricing-popular-badge">الأكثر طلباً</div>
+        <div class="pricing-card-header">
+          <h3>ذهبية</h3>
+          <p class="pricing-price"><span class="price-num price-num--smart" data-monthly-usd="14" data-monthly-lyd="70" data-yearly-usd="11" data-yearly-lyd="55">14</span> <span class="price-curr price-curr--smart">$/شهر</span></p>
+          <p class="pricing-desc">10 كتب شهرياً - ميزات AI الأساسية</p>
+        </div>
+        <ul class="pricing-features">
+          <li><i class="fas fa-check"></i> 10 كتب/شهر (حد 500 صفحة)</li>
+          <li><i class="fas fa-check"></i> جميع صيغ التحميل</li>
+          <li><i class="fas fa-check"></i> تلخيص ذكي</li>
+          <li><i class="fas fa-check"></i> دردشة مع الكتاب</li>
+          <li><i class="fas fa-check"></i> ترجمة فورية</li>
+          <li><i class="fas fa-check"></i> شرح النصوص</li>
+          <li><i class="fas fa-check"></i> قراءة صوتية</li>
+          <li><i class="fas fa-check"></i> اقتباسات وحفظ التقدم</li>
+          <li class="disabled"><i class="fas fa-times"></i> أكثر من 10 كتب</li>
+          <li class="disabled"><i class="fas fa-times"></i> اختبارات وخرائط ذهنية</li>
+        </ul>
+        <button class="pricing-btn pricing-btn--primary" id="smartPlanBtn">طلب الاشتراك</button>
+      </div>
+      <!-- Premium: احترافية - $50 / 250 د.ل = 30 كتاب + كل الميزات -->
+      <div class="pricing-card pricing-card--pro">
+        <div class="pricing-popular-badge">الأفضل</div>
+        <div class="pricing-card-header">
+          <h3>احترافية</h3>
+          <p class="pricing-price"><span class="price-num price-num--premium" data-monthly-usd="50" data-monthly-lyd="250" data-yearly-usd="42" data-yearly-lyd="210">50</span> <span class="price-curr price-curr--premium">$/شهر</span></p>
+          <p class="pricing-desc">30 كتاباً شهرياً - كل الميزات كاملة</p>
+        </div>
+        <ul class="pricing-features">
+          <li><i class="fas fa-check"></i> 30 كتاب/شهر (حد 1000 صفحة)</li>
+          <li><i class="fas fa-check"></i> جميع صيغ التحميل</li>
+          <li><i class="fas fa-check"></i> تلخيص ذكي + دردشة</li>
+          <li><i class="fas fa-check"></i> ترجمة فورية + شرح</li>
+          <li><i class="fas fa-check"></i> قراءة صوتية + اقتباسات</li>
+          <li><i class="fas fa-check"></i> اختبارات ذكية من الكتاب</li>
+          <li><i class="fas fa-check"></i> خرائط ذهنية تلقائية</li>
+          <li><i class="fas fa-check"></i> تحليل نصوص متقدم</li>
+          <li><i class="fas fa-check"></i> بطاقات تعليمية + خطط دراسة</li>
+          <li><i class="fas fa-check"></i> دعم أولوية 24/7</li>
+        </ul>
+        <button class="pricing-btn pricing-btn--primary" id="premiumPlanBtn">طلب الاشتراك</button>
+      </div>
+      <!-- Enterprise -->
+      <div class="pricing-card">
+        <div class="pricing-card-header">
+          <h3>شركات</h3>
+          <p class="pricing-price"><span class="price-num">تواصل</span> <span class="price-curr">معنا</span></p>
+          <p class="pricing-desc">حلول مخصصة للجامعات والشركات</p>
+        </div>
+        <ul class="pricing-features">
+          <li><i class="fas fa-check"></i> حسابات غير محدودة</li>
+          <li><i class="fas fa-check"></i> لوحة تحكم إدارة</li>
+          <li><i class="fas fa-check"></i> تقارير وتحليلات</li>
+          <li><i class="fas fa-check"></i> دعم فني مخصص</li>
+          <li><i class="fas fa-check"></i> تكامل API</li>
+          <li><i class="fas fa-check"></i> تخزين سحابي آمن</li>
+          <li><i class="fas fa-check"></i> عقد سنوي مخصص</li>
+        </ul>
+        <button class="pricing-btn" id="enterpriseBtn"><i class="fab fa-whatsapp"></i> تواصل واتساب</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-section fade-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stats-card"><i class="fas fa-file-pdf"></i><span class="stats-number" data-target="50000">0</span><span class="stats-label">كتاب تم تحويله</span></div>
+      <div class="stats-card"><i class="fas fa-users"></i><span class="stats-number" data-target="15000">0</span><span class="stats-label">مستخدم نشط</span></div>
+      <div class="stats-card"><i class="fas fa-star"></i><span class="stats-number" data-target="98">0</span><span class="stats-label">نسبة الرضا %</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Ad: Footer -->
+<div class="ad-container ad-footer">
+  <div class="ad-label">إعلان</div>
+  <div class="ad-placeholder ad-responsive">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
+      data-ad-slot="xxxxxxxxxx"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <div class="logo"><i class="fas fa-robot"></i><span>Smart <span class="logo-highlight">Reader AI</span></span></div>
+        <p>منصة ذكية لتحويل الكتب إلى تجربة قراءة تفاعلية باستخدام الذكاء الاصطناعي</p>
+      </div>
+      <div class="footer-links">
+        <h4>المميزات</h4>
+        <a href="#">التلخيص الذكي</a>
+        <a href="#">الدردشة مع الكتاب</a>
+        <a href="#">الترجمة</a>
+        <a href="#">القراءة الصوتية</a>
+      </div>
+      <div class="footer-links">
+        <h4>روابط سريعة</h4>
+        <a href="#" id="footerAbout">عن المنصة</a>
+        <a href="#" id="footerContact">اتصل بنا</a>
+        <a href="#" id="footerFree">مجاني</a>
+        <a href="#" id="footerSubscribe">احترافي</a>
+      </div>
+      <div class="footer-links">
+        <h4>قانوني</h4>
+        <a href="#" id="footerTerms">الشروط</a>
+        <a href="#" id="footerPrivacy">الخصوصية</a>
+        <a href="#" id="footerContact">اتصل بنا</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Smart Reader AI - جميع الحقوق محفوظة</p>
+      <p style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;opacity:0.3;">جميع الحقوق محفوظة</p>
+    </div>
+  </div>
+</footer>
+
+<!-- MODALS -->
+
+<!-- AUTH -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal modal--auth">
+    <button class="modal-close" id="authModalClose"><i class="fas fa-times"></i></button>
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="loginTab">تسجيل الدخول</button>
+      <button class="modal-tab" id="signupTab">إنشاء حساب</button>
+    </div>
+    <form class="auth-form" id="loginForm">
+      <div class="form-group"><label><i class="fas fa-envelope"></i> البريد</label><input type="email" class="form-input" id="loginEmail" placeholder="your@email.com" required /></div>
+      <div class="form-group"><label><i class="fas fa-lock"></i> كلمة المرور</label><input type="password" class="form-input" id="loginPassword" placeholder="••••••••" required /></div>
+      <button type="submit" class="form-submit">تسجيل الدخول</button>
+      <p class="form-switch">ليس لديك حساب؟ <a href="#" id="switchToSignup">اشترك الآن</a></p>
+    </form>
+    <form class="auth-form hidden" id="signupForm">
+      <div class="form-group"><label><i class="fas fa-user"></i> الاسم</label><input type="text" class="form-input" id="signupName" placeholder="الاسم الكامل" required /></div>
+      <div class="form-group"><label><i class="fas fa-envelope"></i> البريد</label><input type="email" class="form-input" id="signupEmail" placeholder="your@email.com" required /></div>
+      <div class="form-group"><label><i class="fas fa-lock"></i> كلمة المرور</label><input type="password" class="form-input" id="signupPassword" placeholder="أقل 6 أحرف" minlength="6" required /></div>
+      <button type="submit" class="form-submit">إنشاء حساب</button>
+      <p class="form-switch">لديك حساب؟ <a href="#" id="switchToLogin">تسجيل الدخول</a></p>
+    </form>
+  </div>
+</div>
+
+<!-- PAYMENT -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal modal--payment">
+    <button class="modal-close" id="paymentModalClose"><i class="fas fa-times"></i></button>
+    <h3 id="paymentTitle">إتمام الدفع</h3>
+    <div class="payment-summary"><span id="paymentPlanName">احترافي</span><span class="payment-price" id="paymentAmount">$16</span></div>
+    <form class="payment-form" id="paymentForm">
+      <div class="form-group"><label><i class="fas fa-credit-card"></i> رقم البطاقة</label><input type="text" class="form-input" id="cardNumber" placeholder="4242 4242 4242 4242" maxlength="19" /></div>
+      <div class="form-row">
+        <div class="form-group"><label>تاريخ الانتهاء</label><input type="text" class="form-input" id="cardExpiry" placeholder="MM/YY" maxlength="5" /></div>
+        <div class="form-group"><label>CVV</label><input type="text" class="form-input" id="cardCvv" placeholder="123" maxlength="4" /></div>
+      </div>
+      <div class="form-group"><label><i class="fas fa-user"></i> الاسم</label><input type="text" class="form-input" id="cardName" placeholder="الاسم على البطاقة" /></div>
+      <button type="submit" class="form-submit" id="paymentSubmitBtn"><i class="fas fa-lock"></i> دفع <span id="paymentSubmitAmount">$16</span></button>
+      <p class="payment-secure"><i class="fas fa-shield-alt"></i> دفع آمن 128-bit SSL</p>
+    </form>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="modal-overlay" id="dashboardModal">
+  <div class="modal modal--dashboard">
+    <button class="modal-close" id="dashboardClose"><i class="fas fa-times"></i></button>
+    <h3><i class="fas fa-tachometer-alt"></i> لوحة التحكم</h3>
+    <div class="dashboard-body">
+      <div class="dashboard-section">
+        <h4><i class="fas fa-user"></i> حسابي</h4>
+        <div class="dashboard-info">
+          <div><strong>الاسم:</strong> <span id="dashName">-</span></div>
+          <div><strong>البريد:</strong> <span id="dashEmail">-</span></div>
+          <div><strong>الباقة:</strong> <span class="dash-plan-badge" id="dashPlan">مجاني</span></div>
+        </div>
+      </div>
+      <div class="dashboard-section">
+        <h4><i class="fas fa-chart-bar"></i> الإحصائيات</h4>
+        <div class="dashboard-stats">
+          <div class="dash-stat"><span class="dash-stat-num" id="dashConversions">0</span><span>كتاب</span></div>
+          <div class="dash-stat"><span class="dash-stat-num" id="dashPages">0</span><span>صفحة</span></div>
+          <div class="dash-stat"><span class="dash-stat-num" id="dashDownloads">0</span><span>تحميل</span></div>
+        </div>
+      </div>
+      <div class="dashboard-section" id="dashLibrary">
+        <h4><i class="fas fa-book"></i> مكتبتي</h4>
+        <div id="libraryList"><p class="ai-placeholder">لا توجد كتب بعد</p></div>
+      </div>
+      <div class="dashboard-section" id="dashQuotes">
+        <h4><i class="fas fa-quote-right"></i> اقتباساتي</h4>
+        <div id="quotesList"><p class="ai-placeholder">لا توجد اقتباسات بعد</p></div>
+      </div>
+      <div class="dashboard-section" id="dashUpgradeSection">
+        <h4><i class="fas fa-crown"></i> ترقية</h4>
+        <p class="dashboard-upgrade-text">استمتع بكل ميزات الذكاء الاصطناعي</p>
+        <button class="pricing-btn pricing-btn--primary" id="dashUpgradeBtn">عرض الباقات</button>
+      </div>
+      <div class="dashboard-section" id="dashManageSection" style="display:none">
+        <h4><i class="fas fa-cog"></i> الاشتراك</h4>
+        <button class="dashboard-action-btn" id="dashCancelBtn"><i class="fas fa-ban"></i> إلغاء الاشتراك</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TERMS MODAL -->
+<div class="modal-overlay" id="termsModal">
+  <div class="modal modal--legal">
+    <button class="modal-close" id="termsClose"><i class="fas fa-times"></i></button>
+    <h3><i class="fas fa-file-contract"></i> شروط الاستخدام</h3>
+    <div class="legal-content">
+      <p>باستخدامك لموقع Smart Reader AI، فإنك توافق على الشروط والأحكام التالية:</p>
+      <h4 style="margin:16px 0 8px;color:var(--text-primary);">1. قبول الشروط</h4>
+      <p>باستخدامك للموقع، فإنك تقر وتوافق على الالتزام بهذه الشروط. إذا كنت لا توافق على أي جزء من هذه الشروط، يجب عليك عدم استخدام الموقع.</p>
+      <h4 style="margin:16px 0 8px;color:var(--text-primary);">2. استخدام الخدمة</h4>
+      <p>نقدم خدمة تحويل PDF إلى نصوص قابلة للقراءة. يجب عليك استخدام الملفات التي تملك حقوقها فقط. كل ملف ترفعه يبقى على جهازك ولا يتم تخزينه على خوادمنا.</p>
+      <h4 style="margin:16px 0 8px;color:var(--text-primary);">3. الاشتراكات والمدفوعات</h4>
+      <p>الاشتراك شهري ويمكن إلغاؤه في أي وقت. المدفوعات غير قابلة للاسترداد بعد استخدام الخدمة. الأسعار قابلة للتغيير مع إشعار مسبق.</p>
+      <h4 style="margin:16px 0 8px;color:var(--text-primary);">4. سياسة الإلغاء</h4>
+      <p>يمكنك إلغاء اشتراكك في أي وقت من لوحة التحكم. يستمر الاشتراك حتى نهاية الفترة المدفوعة.</p>
+      <h4 style="margin:16px 0 8px;color:var(--text-primary);">5. حدود المسؤولية</h4>
+      <p>نحن لسنا مسؤولين عن أي أضرار ناتجة عن استخدام الخدمة. الخدمة مقدمة "كما هي" دون ضمانات.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PRIVACY MODAL -->
+<div class="modal-overlay" id="privacyModal">
+  <div class="modal modal--legal">
+    <button class="modal-close" id="privacyClose"><i class="fas fa-times"></i></button>
+    <h3><i class="fas fa-shield-alt"></i> سياسة الخصوصية</h3>
+    <div class="legal-content">
+      <p>نحن في Smart Reader AI نأخذ خصوصيتك على محمل الجد.</p>
+      <h4 style="margin:16px 0 8px;color:var(--text-primary);">1. المعلومات التي نجمعها</h4>
+      <p>نقوم بجمع المعلومات التي تقدمها طواعية عند إنشاء حساب: الاسم، البريد الإلكتروني، معلومات الدفع الأساسية (لا نخزن بيانات البطاقة الكاملة).</p>
+      <h4 style="margin:16px 0 8px;color:var(--text-primary);">2. كيفية استخدام المعلومات</h4>
+      <p>نستخدم معلوماتك لتقديم الخدمة وتحسينها، والتواصل معك بشأن حسابك، وإرسال تحديثات عن الخدمة.</p>
+      <h4 style="margin:16px 0 8px;color:var(--text-primary);">3. حماية البيانات</h4>
+      <p>جميع البيانات مشفرة باستخدام TLS. ملفات PDF التي ترفعها تبقى على جهازك ولا ترسل إلى خوادمنا.</p>
+      <h4 style="margin:16px 0 8px;color:var(--text-primary);">4. ملفات تعريف الارتباط (Cookies)</h4>
+      <p>نستخدم ملفات تعريف الارتباط لتحسين تجربتك وتذكر تفضيلاتك. يمكنك التحكم في ذلك من إعدادات المتصفح.</p>
+      <h4 style="margin:16px 0 8px;color:var(--text-primary);">5. حقوقك</h4>
+      <p>لك الحق في طلب تصحيح أو حذف بياناتك الشخصية في أي وقت بالتواصل معنا.</p>
+    </div>
+  </div>
+</div>
+
+<!-- AI MODALS -->
+<div class="modal-overlay" id="aiModal">
+  <div class="modal modal--ai">
+    <button class="modal-close" id="aiModalClose"><i class="fas fa-times"></i></button>
+    <div id="aiModalContent"></div>
+  </div>
+</div>
+
+<!-- SUBSCRIPTION REQUEST MODAL (يدوي - بدون دفع) -->
+<div class="modal-overlay" id="subRequestModal">
+  <div class="modal modal--auth">
+    <button class="modal-close" id="subRequestClose"><i class="fas fa-times"></i></button>
+    <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:12px;"><i class="fas fa-paper-plane"></i> طلب اشتراك</h3>
+    <p style="font-size:0.88rem;color:var(--text-secondary);margin-bottom:16px;">أرسل طلب اشتراك وسيتم تفعيل حسابك يدوياً خلال 24 ساعة</p>
+    <form class="auth-form" id="subRequestForm">
+      <div class="form-group"><label><i class="fas fa-user"></i> الاسم الكامل</label><input type="text" class="form-input" id="subReqName" placeholder="محمد أحمد" required /></div>
+      <div class="form-group"><label><i class="fas fa-envelope"></i> البريد الإلكتروني</label><input type="email" class="form-input" id="subReqEmail" placeholder="m@example.com" required /></div>
+      <div class="form-group"><label><i class="fas fa-phone"></i> واتساب / هاتف (اختياري)</label><input type="text" class="form-input" id="subReqPhone" placeholder="+218 91 234 5678" /></div>
+      <div class="form-group"><label><i class="fas fa-crown"></i> الباقة المطلوبة</label>
+        <select class="form-input" id="subReqPlan">
+          <option value="basic">تحويل PDF - $0.80</option>
+          <option value="smart">ذهبية - $14/شهر</option>
+          <option value="premium">احترافية - $50/شهر</option>
+        </select>
+      </div>
+      <div class="form-group"><label><i class="fas fa-comment"></i> ملاحظات</label><textarea class="form-input" id="subReqNotes" placeholder="أي ملاحظات..." rows="2" style="resize:vertical;"></textarea></div>
+      <button type="submit" class="form-submit"><i class="fas fa-paper-plane"></i> إرسال الطلب</button>
+      <p style="text-align:center;font-size:0.82rem;color:var(--text-muted);margin-top:14px;">
+        أو تواصل مباشرة عبر واتساب:<br>
+        <a href="https://wa.me/218XXXXXXXXX?text=مرحباً%20أريد%20الاشتراك%20في%20الباقة" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:8px 20px;background:#25D366;color:white;border-radius:8px;font-weight:600;text-decoration:none;font-size:0.85rem;">
+          <i class="fab fa-whatsapp" style="font-size:1.1rem;"></i> واتساب: 218XXXXXXXXX
+        </a>
+      </p>
+    </form>
+  </div>
+</div>
+
+<!-- ADMIN PANEL (المالك فقط) -->
+<div class="modal-overlay" id="adminModal">
+  <div class="modal modal--dashboard" style="max-width:640px;">
+    <button class="modal-close" id="adminClose"><i class="fas fa-times"></i></button>
+    <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;"><i class="fas fa-shield-alt"></i> لوحة تحكم المالك</h3>
+    <div class="admin-panel" id="adminPanelArea">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <span style="font-size:0.85rem;color:var(--text-muted);">الطلبات المعلقة: <strong id="adminPendingCount" style="color:var(--gold);">0</strong></span>
+        <button class="pricing-btn" id="adminRefreshBtn" style="width:auto;padding:8px 16px;font-size:0.8rem;"><i class="fas fa-sync"></i> تحديث</button>
+      </div>
+      <div id="adminRequestsList" style="max-height:350px;overflow-y:auto;">
+        <p class="ai-placeholder">لا توجد طلبات بعد</p>
+      </div>
+      <hr style="border-color:var(--border-color);margin:16px 0;" />
+      <h4 style="font-size:0.95rem;font-weight:700;margin-bottom:8px;"><i class="fas fa-users"></i> جميع المستخدمين</h4>
+      <div id="adminUsersList" style="max-height:200px;overflow-y:auto;">
+        <p class="ai-placeholder">لا يوجد مستخدمين</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AUDIO PLAYER -->
+<div class="audio-player" id="audioPlayer">
+  <div class="audio-controls">
+    <button id="audioPlayBtn"><i class="fas fa-play"></i></button>
+    <div class="audio-progress-bar"><div class="audio-progress-fill" id="audioProgressFill"></div></div>
+    <span class="audio-time" id="audioTime">00:00</span>
+    <button id="audioSpeedBtn">1x</button>
+    <button id="audioCloseBtn"><i class="fas fa-times"></i></button>
+  </div>
+</div>
+
+<!-- WHATSAPP FLOATING BUTTON -->
+<a href="https://wa.me/218XXXXXXXXX?text=مرحباً%20أريد%20الاستفسار%20عن%20الاشتراك" target="_blank" rel="noopener" class="whatsapp-float" id="whatsappFloat" title="تواصل عبر واتساب" aria-label="WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- COOKIE CONSENT -->
+<div class="cookie-consent" id="cookieConsent">
+  <div class="cookie-content">
+    <i class="fas fa-cookie-bite"></i>
+    <p>نستخدم ملفات تعريف الارتباط (Cookies) لتحسين تجربتك وتقديم إعلانات مناسبة. باستمرارك في التصفح، فإنك توافق على <a href="#" id="cookiePrivacyLink">سياسة الخصوصية</a> الخاصة بنا.</p>
+    <div class="cookie-actions">
+      <button class="cookie-btn cookie-btn--accept" id="cookieAccept"><i class="fas fa-check"></i> موافق</button>
+      <button class="cookie-btn cookie-btn--settings" id="cookieSettings"><i class="fas fa-cog"></i> إعدادات</button>
+    </div>
+  </div>
+</div>
+
+<!-- GOOGLE ADSENSE (استبدل xxxxx بواسطة معرفك بعد الموافقة) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-xxxxxxxxxxxxxxxx" crossorigin="anonymous"></script>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+<!-- SCRIPTS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+<script src="js/script.js"></script>
+</body>
+</html>
