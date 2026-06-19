@@ -5,7 +5,7 @@
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
   // استبدل الرقم برقم واتساب الحقيقي (بدون أصفار ولا +)
-  const WHATSAPP_NUMBER = '218XXXXXXXXX';
+  const WHATSAPP_NUMBER = '218912531433';
 
   // ===== DOM =====
   const header = $('#header');
@@ -518,6 +518,10 @@
     isProcessing = true;
 
     try {
+      if (typeof pdfjsLib === 'undefined') {
+        throw new Error(currentLang === 'ar' ? 'مكتبة PDF غير متوفرة. تحقق من اتصالك بالإنترنت.' : 'PDF library not available. Check your internet connection.');
+      }
+
       uploadArea.classList.add('processing');
       updateProgress(0, file.name);
       currentFileName = file.name;
@@ -528,7 +532,13 @@
       updateProgress(10, currentLang === 'ar' ? 'جاري تحليل الملف...' : 'Analyzing file...');
       updateLoadingBar(20);
 
-      const pdf = await pdfjsLib.getDocument({ data: currentPdfBytes }).promise;
+      let pdf;
+      try {
+        pdf = await pdfjsLib.getDocument({ data: currentPdfBytes }).promise;
+      } catch (workerErr) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = '';
+        pdf = await pdfjsLib.getDocument({ data: currentPdfBytes }).promise;
+      }
       totalPages = pdf.numPages;
       pdfText = [];
       fullText = '';
@@ -579,6 +589,12 @@
       }
 
       totalWords = countWords(fullText);
+      if (totalWords === 0) {
+        fullText = currentLang === 'ar'
+          ? '⚠️ لم يتم العثور على نصوص في هذا الملف. قد يكون ملف PDF ممسوحاً ضوئياً (صورة) أو فارغاً.'
+          : '⚠️ No text found in this file. It may be a scanned (image) PDF or empty.';
+        totalWords = 0;
+      }
       if (extractLimit > 0) incrementConversions(maxPages);
 
       updateProgress(100, currentLang === 'ar' ? 'تم بنجاح!' : 'Done!');
@@ -619,7 +635,7 @@
 
   function renderText() {
     const paragraphs = fullText.split('\n').filter(p => p.trim().length > 0);
-    readerContent.innerHTML = paragraphs.map(p => `<p>${p}</p>`).join('');
+    readerContent.innerHTML = paragraphs.map(p => `<p dir="auto">${p}</p>`).join('');
     applyStyles();
   }
 
@@ -764,8 +780,8 @@
   uploadArea.addEventListener('drop', (e) => {
     e.preventDefault(); uploadArea.classList.remove('dragover');
     const files = e.dataTransfer.files;
-    if (files.length > 0 && files[0].type === 'application/pdf') processPDF(files[0]);
-    else showToast('الرجاء اختيار ملف PDF صالح', 'error');
+    if (files.length > 0 && (files[0].type === 'application/pdf' || files[0].name.endsWith('.pdf'))) processPDF(files[0]);
+    else showToast(currentLang === 'ar' ? 'الرجاء اختيار ملف PDF صالح' : 'Please select a valid PDF file', 'error');
   });
   uploadBtn.addEventListener('click', () => fileInput.click());
   heroUploadBtn.addEventListener('click', () => fileInput.click());
@@ -1050,7 +1066,7 @@
   const enterpriseBtn = $('#enterpriseBtn');
   if (enterpriseBtn) {
     enterpriseBtn.addEventListener('click', () => {
-      window.open('https://wa.me/218XXXXXXXXX?text=مرحباً%20أريد%20الاستفسار%20عن%20الباقة%20للشركات', '_blank');
+      window.open('https://wa.me/218912531433?text=مرحباً%20أريد%20الاستفسار%20عن%20الباقة%20للشركات', '_blank');
     });
   }
 
@@ -1146,7 +1162,7 @@
   });
 
   // ===== ADMIN PANEL (المالك) =====
-  const ADMIN_PASSWORD = 'admin2026';
+  const ADMIN_PASSWORD = 'Sm4rtR34d3r!@#2026';
   const adminBtn = $('#adminBtn');
   const adminModal = $('#adminModal');
   const adminClose = $('#adminClose');
