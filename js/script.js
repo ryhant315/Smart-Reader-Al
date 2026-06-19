@@ -600,8 +600,8 @@
           : '⚠️ This PDF appears to be scanned (image-based) with no selectable text.';
         const ocrBtnText = currentLang === 'ar' ? '🔍 تجربة التعرف الضوئي (OCR)' : '🔍 Try OCR Text Recognition';
         const ocrNote = currentLang === 'ar'
-          ? 'قد يستغرق ذلك بضع دقائق حسب عدد الصفحات.'
-          : 'This may take a few minutes depending on the number of pages.';
+          ? '⏳ قد يستغرق 5-10 ثوانٍ لكل صفحة. سيتم التحميل مرة واحدة فقط.'
+          : '⏳ Takes ~5-10 seconds per page. One-time download.';
         fullText = `${ocrMsg}\n\n<div class="ocr-prompt"><button class="btn-primary" id="${ocrBtnId}" style="padding:14px 32px;font-size:1.1rem;border-radius:12px;background:var(--primary);color:white;border:none;cursor:pointer;transition:transform 0.2s;">${ocrBtnText}</button>\n<p style="color:var(--text-muted);font-size:0.85rem;margin-top:8px;">${ocrNote}</p></div>`;
         totalWords = 0;
         ocrScannedFile = true;
@@ -634,15 +634,8 @@
       return;
     }
     if (typeof Tesseract === 'undefined') {
-      updateProgress(0, currentLang === 'ar' ? 'جاري تحميل مكتبة OCR (~5MB)...' : 'Loading OCR library (~5MB)...');
-      uploadArea.classList.add('processing');
-      await new Promise((resolve, reject) => {
-        const s = document.createElement('script');
-        s.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
-        s.onload = resolve;
-        s.onerror = () => reject(new Error(currentLang === 'ar' ? 'فشل تحميل مكتبة OCR' : 'Failed to load OCR library'));
-        document.body.appendChild(s);
-      });
+      showToast(currentLang === 'ar' ? 'مكتبة OCR غير متوفرة. تأكد من اتصالك بالإنترنت وحاول مرة أخرى.' : 'OCR library not available. Check your connection and try again.', 'error');
+      return;
     }
     isProcessing = true;
     uploadArea.classList.add('processing');
